@@ -1,11 +1,8 @@
 import clsx, { ClassValue } from "clsx";
-import * as forge from 'node-forge';
 import { twMerge } from "tailwind-merge";
 import * as bip39 from "bip39";
 import { Keypair } from "@solana/web3.js";
 import { derivePath } from "ed25519-hd-key";
-import nacl from "tweetnacl";
-import naclUtil from "tweetnacl-util";
 import crypto from "crypto";
 import bs58 from "bs58";
 import { toast } from "sonner";
@@ -60,6 +57,33 @@ export const generateKeysFromSeedPhrase = (
     publicKey: keypair.publicKey.toBase58(), // Public key in Base58 encoding
   };
 };
+
+// function encryptDataWithPublicKey(data: string, publicKey: string) {
+//   const key = naclUtil.decodeBase64(publicKey);
+//   const nonce = nacl.randomBytes(nacl.secretbox.nonceLength);
+//   const messageUint8 = naclUtil.decodeUTF8(data);
+//   const encryptedMessage = nacl.secretbox(messageUint8, nonce, key);
+//   const fullMessage = new Uint8Array(nonce.length + encryptedMessage.length);
+//   fullMessage.set(nonce);
+//   fullMessage.set(encryptedMessage, nonce.length);
+//   return naclUtil.encodeBase64(fullMessage);
+// }
+//
+// function decryptDataWithPrivateKey(data: string, privateKey: string) {
+//   const key = naclUtil.decodeBase64(privateKey);
+//   const messageWithNonceAsUint8Array = naclUtil.decodeBase64(data);
+//   const nonce = messageWithNonceAsUint8Array.slice(0, nacl.secretbox.nonceLength);
+//   const message = messageWithNonceAsUint8Array.slice(
+//     nacl.secretbox.nonceLength,
+//     messageWithNonceAsUint8Array.length,
+//   );
+//   const decrypted = nacl.secretbox.open(message, nonce, key);
+//   if (!decrypted) {
+//     throw new Error("Could not decrypt message");
+//   }
+//   return naclUtil.encodeUTF8(decrypted);
+// }
+
 
 // Encrypt data using the public key
 export function encryptData(data: string): string {
