@@ -58,11 +58,13 @@ pub struct Vault {
 
 #[derive(Accounts)]
 pub struct CreateVault<'info> {
-    #[account(init, payer = user, space = 8 + 32 + 4 + 64 + 4 + 32)]
     // Allocate space for the vault account
+    #[account(init, payer = payer_account, space = 8 + 32 + 4 + 64 + 4 + 32)]
     pub vault: Account<'info, Vault>, // Create the vault account
     #[account(mut)]
     pub user: Signer<'info>, // User creating the vault
+    #[account(mut)] // The app account that will pay for the transaction
+    pub payer_account: Signer<'info>, // The payer (controlled by Solpass app)
     pub system_program: Program<'info, System>, // System program for account creation
 }
 
